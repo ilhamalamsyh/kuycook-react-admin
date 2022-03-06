@@ -1,0 +1,6 @@
+{
+    "name": "Banners",
+    "version": "0.0.0",
+    "main": "BannerList.js",
+    "private": true
+}

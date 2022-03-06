@@ -136,7 +136,7 @@ export default function Header(props) {
           )}
         </IconButton>
         <Typography variant="h6" weight="medium" className={classes.logotype}>
-          React Material Admin
+          Kuycook Admin
         </Typography>
         <div className={classes.grow} />
         <div
@@ -287,7 +287,7 @@ export default function Header(props) {
         >
           <div className={classes.profileMenuUser}>
             <Typography variant="h4" weight="medium">
-              John Smith
+              Ilham Alamsyah
             </Typography>
             <Typography
               className={classes.profileMenuLink}

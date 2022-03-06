@@ -6,7 +6,7 @@ import {
   withRouter,
 } from "react-router-dom";
 import classnames from "classnames";
-import {Box, IconButton, Link} from '@material-ui/core'
+import {Box, IconButton, Link } from '@material-ui/core'
 import Icon from '@mdi/react'
 
 //icons
@@ -29,6 +29,7 @@ import Typography from "../../pages/typography";
 import Notifications from "../../pages/notifications";
 import Maps from "../../pages/maps";
 import Tables from "../../pages/tables";
+import BannerList from "../../pages/banners/BannerList";
 import Icons from "../../pages/icons";
 import Charts from "../../pages/charts";
 
@@ -56,6 +57,7 @@ function Layout(props) {
               <Route path="/app/dashboard" component={Dashboard} />
               <Route path="/app/typography" component={Typography} />
               <Route path="/app/tables" component={Tables} />
+              <Route path="/app/banners" component={BannerList} />
               <Route path="/app/notifications" component={Notifications} />
               <Route
                 exact
@@ -74,30 +76,8 @@ function Layout(props) {
               justifyContent="space-between"
             >
               <div>
-                <Link
-                  color={'primary'}
-                  href={'https://flatlogic.com/'}
-                  target={'_blank'}
-                  className={classes.link}
-                >
-                  Flatlogic
-                </Link>
-                <Link
-                  color={'primary'}
-                  href={'https://flatlogic.com/about'}
-                  target={'_blank'}
-                  className={classes.link}
-                >
-                  About Us
-                </Link>
-                <Link
-                  color={'primary'}
-                  href={'https://flatlogic.com/blog'}
-                  target={'_blank'}
-                  className={classes.link}
-                >
-                  Blog
-                </Link>
+              <Link className={classes.copyright}
+              >© 2021-{new Date().getFullYear()} <a style={{ textDecoration: 'none', color: 'inherit' }} href="https://flatlogic.com" rel="noopener noreferrer" target="_blank">Kuycook</a>. All rights reserved.</Link>
               </div>
               <div>
                 <Link
