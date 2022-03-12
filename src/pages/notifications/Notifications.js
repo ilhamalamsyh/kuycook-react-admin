@@ -118,7 +118,7 @@ export default function NotificationsPage(props) {
               <Button
                 variant="contained"
                 color="secondary"
-                onClick={() => handleNotificationCall("error")}
+                onClick={() => handleNotificationCall("error", 'failed login')}
                 className={classnames(classes.notificationCallButton)}
               >
                 Error + Retry Message
@@ -337,7 +337,7 @@ export default function NotificationsPage(props) {
     setErrorToastId(null);
   }
 
-  function handleNotificationCall(notificationType) {
+  function handleNotificationCall(notificationType, message) {
     var componentProps;
 
     if (errorToastId && notificationType === "error") return;
@@ -354,7 +354,7 @@ export default function NotificationsPage(props) {
       case "error":
         componentProps = {
           type: "message",
-          message: "Message was not sent!",
+          message: message,
           variant: "contained",
           color: "secondary",
           extraButton: "Resend",
@@ -390,3 +390,4 @@ export default function NotificationsPage(props) {
 function CloseButton({ closeToast, className }) {
   return <CloseIcon className={className} onClick={closeToast} />;
 }
+

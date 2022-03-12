@@ -18,24 +18,43 @@ import useStyles from "./styles";
 import logo from "./logo.svg";
 
 // context
-import { useUserDispatch, loginUser } from "../../context/UserContext";
+import { useUserDispatch } from "../../context/UserContext";
+import { loginUser } from './services/auth_service';
+import { ToastContainer } from "react-toastify";
 
 function Login(props) {
-  var classes = useStyles();
+  let classes = useStyles();
 
   // global
   var userDispatch = useUserDispatch();
 
+  // "email":'super.admin@gmail.com',
+  //   "password":'niki999'
+  
+
   // local
-  var [isLoading, setIsLoading] = useState(false);
-  var [error, setError] = useState(null);
-  var [activeTabId, setActiveTabId] = useState(0);
-  var [nameValue, setNameValue] = useState("");
-  var [loginValue, setLoginValue] = useState("admin@flatlogic.com");
-  var [passwordValue, setPasswordValue] = useState("password");
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [activeTabId, setActiveTabId] = useState(0);
+  const [nameValue, setNameValue] = useState("");
+  const [emailValue, setEmailValue] = useState("");
+  const [passwordValue, setPasswordValue] = useState("");
 
   return (
     <Grid container className={classes.container}>
+      <div>
+        <ToastContainer 
+          position="top-right"
+          autoClose={5000}
+          hideProgressBar
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+        />
+      </div>
       <div className={classes.logotypeContainer}>
         <img src={logo} alt="logo" className={classes.logotypeImage} />
         <Typography className={classes.logotypeText}>Kuycook Admin</Typography>
@@ -70,8 +89,8 @@ function Login(props) {
                     input: classes.textField,
                   },
                 }}
-                value={loginValue}
-                onChange={e => setLoginValue(e.target.value)}
+                value={emailValue}
+                onChange={e => setEmailValue(e.target.value)}
                 margin="normal"
                 placeholder="Email Adress"
                 type="email"
@@ -98,12 +117,12 @@ function Login(props) {
                 ) : (
                   <Button
                     disabled={
-                      loginValue.length === 0 || passwordValue.length === 0
+                      emailValue.length === 0 || passwordValue.length === 0
                     }
                     onClick={() =>
                       loginUser(
                         userDispatch,
-                        loginValue,
+                        emailValue,
                         passwordValue,
                         props.history,
                         setIsLoading,
@@ -163,8 +182,8 @@ function Login(props) {
                     input: classes.textField,
                   },
                 }}
-                value={loginValue}
-                onChange={e => setLoginValue(e.target.value)}
+                value={emailValue}
+                onChange={e => setEmailValue(e.target.value)}
                 margin="normal"
                 placeholder="Email Adress"
                 type="email"
@@ -193,7 +212,7 @@ function Login(props) {
                     onClick={() =>
                       loginUser(
                         userDispatch,
-                        loginValue,
+                        emailValue,
                         passwordValue,
                         props.history,
                         setIsLoading,
@@ -201,7 +220,7 @@ function Login(props) {
                       )
                     }
                     disabled={
-                      loginValue.length === 0 ||
+                      emailValue.length === 0 ||
                       passwordValue.length === 0 ||
                       nameValue.length === 0
                     }

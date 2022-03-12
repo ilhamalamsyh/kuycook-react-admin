@@ -33,7 +33,8 @@ import {
   useLayoutDispatch,
   toggleSidebar,
 } from "../../context/LayoutContext";
-import { useUserDispatch, signOut } from "../../context/UserContext";
+import { useUserDispatch } from "../../context/UserContext";
+import { signOut } from '../../pages/login/services/auth_service';
 
 const messages = [
   {
@@ -103,6 +104,7 @@ export default function Header(props) {
   var [isNotificationsUnread, setIsNotificationsUnread] = useState(true);
   var [profileMenu, setProfileMenu] = useState(null);
   var [isSearchOpen, setSearchOpen] = useState(false);
+  let currentUser = JSON.parse(localStorage.getItem('id_token'));
 
   return (
     <AppBar position="fixed" className={classes.appBar}>
@@ -286,9 +288,12 @@ export default function Header(props) {
           disableAutoFocusItem
         >
           <div className={classes.profileMenuUser}>
-            <Typography variant="h4" weight="medium">
-              Ilham Alamsyah
-            </Typography>
+            {localStorage.getItem('id_token') === null || localStorage.getItem('id_token') === undefined ?
+              currentUser = JSON.parse(localStorage.getItem('id_token'))
+                  
+                  :  <Typography variant="h4" weight="medium">
+                        {currentUser.fullname}
+                      </Typography>}             
             <Typography
               className={classes.profileMenuLink}
               component="a"

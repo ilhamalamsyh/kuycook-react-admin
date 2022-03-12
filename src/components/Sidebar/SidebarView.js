@@ -10,15 +10,11 @@ import {
   FormatSize as TypographyIcon,
   FilterNone as UIElementsIcon,
   BorderAll as TableIcon,
-  QuestionAnswer as SupportIcon,
-  LibraryBooks as LibraryIcon,
   HelpOutline as FAQIcon,
   ArrowBack as ArrowBackIcon,
 } from "@material-ui/icons";
 import classNames from 'classnames';
-
 import SidebarLink from './components/SidebarLink/SidebarLinkContainer';
-import Dot from './components/Dot';
 
 const structure = [
   { id: 0, label: 'Dashboard', link: '/app/dashboard', icon: <HomeIcon /> },

@@ -9,6 +9,8 @@ function userReducer(state, action) {
       return { ...state, isAuthenticated: true };
     case "SIGN_OUT_SUCCESS":
       return { ...state, isAuthenticated: false };
+    case 'LOGIN_FAILURE':
+      return { ...state, isAuthenticated: false };
     default: {
       throw new Error(`Unhandled action type: ${action.type}`);
     }
@@ -17,7 +19,7 @@ function userReducer(state, action) {
 
 function UserProvider({ children }) {
   var [state, dispatch] = React.useReducer(userReducer, {
-    isAuthenticated: !!localStorage.getItem("id_token"),
+    isAuthenticated: !!localStorage.getItem("user"),
   });
 
   return (
@@ -45,32 +47,4 @@ function useUserDispatch() {
   return context;
 }
 
-export { UserProvider, useUserState, useUserDispatch, loginUser, signOut };
-
-// ###########################################################
-
-function loginUser(dispatch, login, password, history, setIsLoading, setError) {
-  setError(false);
-  setIsLoading(true);
-
-  if (!!login && !!password) {
-    setTimeout(() => {
-      localStorage.setItem('id_token', 1)
-      setError(null)
-      setIsLoading(false)
-      dispatch({ type: 'LOGIN_SUCCESS' })
-
-      history.push('/app/dashboard')
-    }, 2000);
-  } else {
-    dispatch({ type: "LOGIN_FAILURE" });
-    setError(true);
-    setIsLoading(false);
-  }
-}
-
-function signOut(dispatch, history) {
-  localStorage.removeItem("id_token");
-  dispatch({ type: "SIGN_OUT_SUCCESS" });
-  history.push("/login");
-}
+export { UserProvider, useUserState, useUserDispatch };
