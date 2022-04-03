@@ -1,13 +1,14 @@
 import axios from 'axios';
-import { checkExistToken, user } from '../../../utils/checkExistToken';
+import { checkExpiryToken } from '../../../utils/handleToken';
 
 const BANNER_LIST_ENDPOINT_URL = 'http://localhost:8080/kuycook/api/banners?&size=20&page=0&sort=desc';
 const BANNER_ENDPOINT_URL = 'http://localhost:8080/kuycook/api/banners/';
 
+const user = JSON.parse(localStorage.getItem('user'));
 const LOGIN_FAILURE = 'LOGIN_FAILURE';
 
 const createBanner = async (dispatch,history,data) => {
-	checkExistToken(dispatch, history);
+	checkExpiryToken(user,dispatch, history);
 	const result = await axios.post(BANNER_ENDPOINT_URL, {
 		'title': data.title,
 		'image': data.image
@@ -25,7 +26,7 @@ const createBanner = async (dispatch,history,data) => {
 };
 
 const updateBanner = async(dispatch, history,id, data) => {
-	checkExistToken(dispatch, history);
+	checkExpiryToken(user,dispatch, history);
 	const result = await axios.put(BANNER_ENDPOINT_URL+id, {
 		'title': data.title,
 		'image': data.image
@@ -43,7 +44,7 @@ const updateBanner = async(dispatch, history,id, data) => {
 };
 
 const fetchBannerList = async (dispatch, history) => {
-	checkExistToken(dispatch, history);
+	checkExpiryToken(user,dispatch, history);
 	const result =  await axios.get(BANNER_LIST_ENDPOINT_URL, {
 		headers: {'Authorization' : `Bearer ${user.token}`}
 	})
@@ -60,7 +61,7 @@ const fetchBannerList = async (dispatch, history) => {
 };
 
 const getBannerDetail = async(dispatch, history, id) => {
-	checkExistToken(dispatch, history);
+	checkExpiryToken(user,dispatch, history);
 	const result = await axios.get(BANNER_ENDPOINT_URL+id,{
 		headers: {'Authorization' : `Bearer ${user.token}`}
 	}).then(response => {
@@ -76,7 +77,7 @@ const getBannerDetail = async(dispatch, history, id) => {
 };
 
 const deleteBanner = async (dispatch, history,id) => {
-	checkExistToken(dispatch, history);
+	checkExpiryToken(user,dispatch, history);
 	const result = await axios.delete(BANNER_ENDPOINT_URL+id,{
 		headers: {'Authorization' : `Bearer ${user.token}`}
 	}).then(response => {
@@ -92,7 +93,7 @@ const deleteBanner = async (dispatch, history,id) => {
 };
 
 const fetchTotalBanner = async(dispatch, history) => {
-	checkExistToken(dispatch, history);
+	checkExpiryToken(user,dispatch, history);
 	const result = await axios.get(BANNER_LIST_ENDPOINT_URL, {
 		headers: {'Authorization' : `Bearer ${user.token}`}
 	})
