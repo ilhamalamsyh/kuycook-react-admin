@@ -7,9 +7,10 @@ import { deleteBanner, getBannerDetail } from './services/banner_service';
 import { Button, DialogTitle } from '@material-ui/core';
 import useStyles from './styles/style';
 import { Link } from 'react-router-dom';
-
+import { useUserDispatch } from '../../context/UserContext';
 
 export default function BannerDetail() {
+	var userDispatch = useUserDispatch();
 	var classes = useStyles();
 	const history = useHistory();
 	const {id} = useParams();
@@ -27,12 +28,12 @@ export default function BannerDetail() {
 	const handleDeleteBanner = async() => {
 		setOpen(false);
 		await history.goBack();
-		await deleteBanner(id);
+		await deleteBanner(userDispatch,history,id);
 	};
 
 	useEffect( async() => {
-		await getBannerDetail(id);
-		setBanner(await getBannerDetail(id));
+		await getBannerDetail(userDispatch,history,id);
+		setBanner(await getBannerDetail(userDispatch,history,id));
 	},[]);
 
 	return (
