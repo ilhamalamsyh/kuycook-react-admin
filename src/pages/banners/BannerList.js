@@ -1,34 +1,64 @@
-import React from 'react';
-import { Grid } from '@material-ui/core';
+/* eslint-disable no-unused-vars */
+import React, { useEffect, useState } from 'react';
+import { Button, Grid } from '@material-ui/core';
 import MUIDataTable from 'mui-datatables';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
-
-// components
-import PageTitle from '../../components/PageTitle';
+import { useHistory } from 'react-router-dom';
+import { fetchBannerList, fetchTotalBanner } from './services/banner_service';
+import { Link } from 'react-router-dom';
 
 // id, title. image
-
-const datatableData = [
-	['Joe James', 'Example Inc. Example Inc. Example Inc. Example Inc. Example Inc. Example Inc.', 'Yonkers', 'NY','oe Jamesoe Jamesoe Jamesoe Jamesoe Jamesoe Jamesoe Jamesoe Jamesoe Jamesoe James', 'oe Jamesoe Jamesoe Jamesoe Jamesoe Jamesoe Jamesoe Jamesoe Jamesoe Jamesoe James'],
-	['John Walsh', 'Example Inc.', 'Hartford', 'CT'],
-	['Bob Herm', 'Example Inc.', 'Tampa', 'FL'],
-	['James Houston', 'Example Inc.', 'Dallas', 'TX'],
-	['Prabhakar Linwood', 'Example Inc.', 'Hartford', 'CT'],
-	['Kaui Ignace', 'Example Inc.', 'Yonkers', 'NY'],
-	['Esperanza Susanne', 'Example Inc.', 'Hartford', 'CT'],
-	['Christian Birgitte', 'Example Inc.', 'Tampa', 'FL'],
-	['Meral Elias', 'Example Inc.', 'Hartford', 'CT'],
-	['Deep Pau', 'Example Inc.', 'Yonkers', 'NY'],
-	['Sebastiana Hani', 'Example Inc.', 'Dallas', 'TX'],
-	['Marciano Oihana', 'Example Inc.', 'Yonkers', 'NY'],
-	['Brigid Ankur', 'Example Inc.', 'Dallas', 'TX'],
-	['Anna Siranush', 'Example Inc.', 'Yonkers', 'NY'],
-	['Avram Sylva', 'Example Inc.', 'Hartford', 'CT'],
-	['Serafima Babatunde', 'Example Inc.', 'Tampa', 'FL'],
-	['Gaston Festus', 'Example Inc.', 'Tampa', 'FL'],
+const columns = [
+	{
+		name: 'id',
+		label: 'ID',
+		options:{
+			filter:true,
+			sort: true
+		}
+	},
+	{
+		name: 'title',
+		label: 'Name',
+		options:{
+			filter:true,
+			sort: true
+		}
+	},
+	{
+		name: 'image',
+		label: 'Image',
+		options:{
+			filter:false,
+			sort: false,
+			customBodyRender: (value) => {
+				return(
+					<img
+						src={value}
+						width={350}
+						height={150}
+						alt='banner image'
+					/>
+				);
+			}
+		},
+	},
 ];
 
+
 const BannerList = () => {
+
+	const history = useHistory();
+
+	const [data, setData] = useState();
+	const [total, setTotal] = useState(0);
+
+	useEffect(async () => {
+		await fetchBannerList();
+		setTotal(await fetchTotalBanner());
+		setData(await fetchBannerList());
+	},[]);
+
 	const getMuiTheme = () => createMuiTheme({
 		overrides: {
 			MuiTableCell: {
@@ -41,17 +71,26 @@ const BannerList = () => {
 	});
 	return(
 		<>
-			<PageTitle title='Banners' />
+			<Link
+				to='/app/banners/create'
+			>
+				<Button variant='contained' color='primary' onClick={null}>Create</Button>
+			</Link>
+			
+			<p style={{color: 'grey'}}>{total} records found</p>
 			<Grid container spacing={4}>
 				<Grid item xs={12}>
 					<MuiThemeProvider theme={getMuiTheme()}>
 						<MUIDataTable 
 							title='Banner List'
-							columns={['Id', 'Title', 'Image', 'CreatedAt', 'UpdatedAt', 'DeletedAt', 'DeletedAt', 'DeletedAt','DeletedAt','DeletedAt','DeletedAt','DeletedAt','DeletedAt']}
-							data={datatableData}
-							options={{
+							columns={columns}
+							data={data}
+							options={{	
+								selectableRowsOnClick: false,	
+								expandableRowsOnClick:true,
 								selectableRows: false,
-								onRowClick: (rowIndex) => window.location.href = `banners/${rowIndex[0]}`,
+								onRowClick: (colData) => 
+									history.push(`/app/banners/${colData[0]}`)
 							}}
 						/>
 					</MuiThemeProvider>
