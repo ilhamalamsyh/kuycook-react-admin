@@ -6,6 +6,7 @@ import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import { useHistory } from 'react-router-dom';
 import { fetchBannerList, fetchTotalBanner } from './services/banner_service';
 import { Link } from 'react-router-dom';
+import { useUserDispatch } from '../../context/UserContext';
 
 // id, title. image
 const columns = [
@@ -47,16 +48,16 @@ const columns = [
 
 
 const BannerList = () => {
-
+	var userDispatch = useUserDispatch();
 	const history = useHistory();
 
 	const [data, setData] = useState();
 	const [total, setTotal] = useState(0);
 
 	useEffect(async () => {
-		await fetchBannerList();
-		setTotal(await fetchTotalBanner());
-		setData(await fetchBannerList());
+		await fetchBannerList(userDispatch, history);
+		setTotal(await fetchTotalBanner(userDispatch, history));
+		setData(await fetchBannerList(userDispatch, history));
 	},[]);
 
 	const getMuiTheme = () => createMuiTheme({

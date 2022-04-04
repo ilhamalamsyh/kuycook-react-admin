@@ -9,8 +9,10 @@ import { useFormik } from 'formik';
 import { useLocation } from 'react-router-dom';
 import { createBanner, getBannerDetail, updateBanner } from '../services/banner_service';
 import { useHistory } from 'react-router-dom';
+import { useUserDispatch } from '../../../context/UserContext';
 
 const BannerForm = () => {
+	var userDispatch = useUserDispatch();
 	var classes = useStyles();
 	const validationSchema = yup.object({
 		title: yup.string().trim().required('Title is required'),
@@ -23,17 +25,11 @@ const BannerForm = () => {
 	const url = useLoc.pathname.split('/');
 	const lastPath = url.pop();
 	const bannerId = url[url.length - 1];
-	
-	// const formRef = useRef(null);
-	// const connectButton = () => {
-	// 	console.log('submit banner form');
-	// 	formRef.current.submit();
-	// };
 
 	if (lastPath === 'edit') {
 		useEffect( async() => {
-			await getBannerDetail(bannerId);
-			setBanner(await getBannerDetail(bannerId));
+			await getBannerDetail(userDispatch,history,bannerId);
+			setBanner(await getBannerDetail(userDispatch,history,bannerId));
 		},[]);    
 	}
 
@@ -48,10 +44,10 @@ const BannerForm = () => {
 		},
 		onSubmit: (values) => {
 			if (lastPath === 'edit') {
-				updateBanner(bannerId, values);
+				updateBanner(userDispatch,history,bannerId, values);
 				history.goBack();
 			}else{
-				createBanner(values);
+				createBanner(userDispatch,history,values);
 				history.goBack();
 			}
 		},
