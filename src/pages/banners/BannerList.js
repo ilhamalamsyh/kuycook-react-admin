@@ -7,6 +7,7 @@ import { useHistory } from 'react-router-dom';
 import { fetchBannerList, fetchTotalBanner } from './services/banner_service';
 import { Link } from 'react-router-dom';
 import { useUserDispatch } from '../../context/UserContext';
+import Loading from '../../components/Loading/Loading';
 
 // id, title. image
 const columns = [
@@ -46,18 +47,21 @@ const columns = [
 	},
 ];
 
-
 const BannerList = () => {
 	var userDispatch = useUserDispatch();
 	const history = useHistory();
 
 	const [data, setData] = useState();
 	const [total, setTotal] = useState(0);
+	const [loading, setLoading] = useState(true);
 
 	useEffect(async () => {
-		await fetchBannerList(userDispatch, history);
 		setTotal(await fetchTotalBanner(userDispatch, history));
 		setData(await fetchBannerList(userDispatch, history));
+		const timer = setTimeout(() => {
+			setLoading(false);
+		}, 1000);
+		return () => clearTimeout(timer);
 	},[]);
 
 	const getMuiTheme = () => createMuiTheme({
@@ -78,8 +82,29 @@ const BannerList = () => {
 				<Button variant='contained' color='primary' onClick={null}>Create</Button>
 			</Link>
 			
-			<p style={{color: 'grey'}}>{total} records found</p>
-			<Grid container spacing={4}>
+			{loading ? <div style={{paddingTop:50}}></div>: <p style={{color: 'grey'}}>{total} records found</p>}
+			{
+				loading ? <Loading>
+					<Grid container spacing={4}>
+						<Grid item xs={12}>
+							<MuiThemeProvider theme={getMuiTheme()}>
+								<MUIDataTable 
+									title='Banner List'
+									columns={columns}
+									data={data}
+									options={{	
+										selectableRowsOnClick: false,	
+										expandableRowsOnClick:true,
+										selectableRows: false,
+										onRowClick: (colData) => 
+											history.push(`/app/banners/${colData[0]}`)
+									}}
+								/>
+							</MuiThemeProvider>
+						</Grid>
+					</Grid>
+				</Loading> 
+			: <Grid container spacing={4}>
 				<Grid item xs={12}>
 					<MuiThemeProvider theme={getMuiTheme()}>
 						<MUIDataTable 
@@ -96,7 +121,8 @@ const BannerList = () => {
 						/>
 					</MuiThemeProvider>
 				</Grid>
-			</Grid>
+			</Grid> 
+			}
 		</>
 	);
 };
