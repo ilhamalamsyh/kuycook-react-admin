@@ -4,7 +4,7 @@ import { Button, Grid } from '@material-ui/core';
 import MUIDataTable from 'mui-datatables';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import { useHistory } from 'react-router-dom';
-import { fetchBannerList, fetchTotalBanner } from './services/banner_service';
+import { fetchBannerList } from './services/banner_service';
 import { Link } from 'react-router-dom';
 import { useUserDispatch } from '../../context/UserContext';
 import Loading from '../../components/Loading/Loading';
