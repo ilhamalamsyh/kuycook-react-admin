@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { checkExpiryToken } from '../../../utils/handleToken';
 
-const BANNER_LIST_ENDPOINT_URL = 'http://localhost:8080/kuycook/api/banners?&size=20&page=0&sort=desc';
+const BANNER_LIST_ENDPOINT_URL = 'http://localhost:8080/kuycook/api/banners?&size=';
 const BANNER_ENDPOINT_URL = 'http://localhost:8080/kuycook/api/banners/';
 
 const user = JSON.parse(localStorage.getItem('user'));
@@ -43,13 +43,16 @@ const updateBanner = async(dispatch, history,id, data) => {
 	return result;
 };
 
-const fetchBannerList = async (dispatch, history) => {
+const fetchBannerList = async (dispatch, history,page, size, sort) => {
 	checkExpiryToken(user,dispatch, history);
-	const result =  await axios.get(BANNER_LIST_ENDPOINT_URL, {
+	const result =  await axios.get(`${BANNER_LIST_ENDPOINT_URL}${size}&page=${page}&sort=${sort}`, {
 		headers: {'Authorization' : `Bearer ${user.token}`}
 	})
 		.then(response => {
-			return response.data.content;
+			return {
+				content: response.data.content, 
+				total: response.data.totalElements}
+			;
 		}).catch(err => {
 			if (err.response.status === 401) {
 				dispatch({ type: LOGIN_FAILURE });    
@@ -92,20 +95,4 @@ const deleteBanner = async (dispatch, history,id) => {
 	return result;
 };
 
-const fetchTotalBanner = async(dispatch, history) => {
-	checkExpiryToken(user,dispatch, history);
-	const result = await axios.get(BANNER_LIST_ENDPOINT_URL, {
-		headers: {'Authorization' : `Bearer ${user.token}`}
-	})
-		.then(response => {
-			return response.data.totalElements;
-		}).catch(err => {
-			if(err.response.status === 401){
-				dispatch({ type: LOGIN_FAILURE });    
-				history.push('/login');
-			}
-		});
-	return result;
-};
-
-export {createBanner, updateBanner, fetchBannerList, fetchTotalBanner, getBannerDetail, deleteBanner};
+export {createBanner, updateBanner, fetchBannerList, getBannerDetail, deleteBanner};

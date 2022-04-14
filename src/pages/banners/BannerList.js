@@ -4,10 +4,11 @@ import { Button, Grid } from '@material-ui/core';
 import MUIDataTable from 'mui-datatables';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import { useHistory } from 'react-router-dom';
-import { fetchBannerList, fetchTotalBanner } from './services/banner_service';
+import { fetchBannerList } from './services/banner_service';
 import { Link } from 'react-router-dom';
 import { useUserDispatch } from '../../context/UserContext';
 import Loading from '../../components/Loading/Loading';
+import { useLocation } from 'react-router-dom/cjs/react-router-dom.min';
 
 // id, title. image
 const columns = [
@@ -50,19 +51,28 @@ const columns = [
 const BannerList = () => {
 	var userDispatch = useUserDispatch();
 	const history = useHistory();
+	const query = useLocation().search;
+	let page = new URLSearchParams(query).get('page') ;
+	let rowsPerPage = new URLSearchParams(query).get('rowsPerPage');
+	const sort = new URLSearchParams(query).get('sort');
+	const options = {};
 
 	const [data, setData] = useState();
 	const [total, setTotal] = useState(0);
 	const [loading, setLoading] = useState(true);
 
 	useEffect(async () => {
-		setTotal(await fetchTotalBanner(userDispatch, history));
-		setData(await fetchBannerList(userDispatch, history));
+		const banners = await fetchBannerList(userDispatch, history, page, rowsPerPage, sort);
+
+		setData(banners.content);
+		setTotal(banners.total);
+
 		const timer = setTimeout(() => {
 			setLoading(false);
 		}, 1000);
 		return () => clearTimeout(timer);
-	},[]);
+	},[page, rowsPerPage, sort,]);
+
 
 	const getMuiTheme = () => createMuiTheme({
 		overrides: {
@@ -115,6 +125,15 @@ const BannerList = () => {
 								selectableRowsOnClick: false,	
 								expandableRowsOnClick:true,
 								selectableRows: false,
+								rowsPerPage,
+								rowsPerPageOptions: [5,10,15,20],
+								onChangeRowsPerPage: (number) => {history.push(`/app/banners?page=${page}&rowsPerPage=${number}&sort=${sort}`);},
+								serverSide:true,
+								onChangePage: (number) => {
+									history.push(`/app/banners?page=${number}&rowsPerPage=${rowsPerPage}&sort=${sort}`);
+								},
+								count: total,
+								responsive: 'standard',
 								onRowClick: (colData) => 
 									history.push(`/app/banners/${colData[0]}`)
 							}}
