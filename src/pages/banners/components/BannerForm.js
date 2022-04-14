@@ -119,7 +119,7 @@ const BannerForm = () => {
                                                 ? <Button type='submit' color='primary' variant='contained' >Create</Button> 
                                                 : <Button type='submit' color='primary' variant='contained' >Update</Button>}
 												{lastPath === 'create' 
-												? <Link to='/app/banners?page=1&rowsPerPage=10'>
+												? <Link to='/app/banners?page=1&rowsPerPage=10&sort=desc'>
 													<Button variant='text'>Cancel</Button>
 												</Link>
 												: <Button color='primary' variant='contained' onClick={handleCancelButton}>Cancel</Button>}
