@@ -53,7 +53,7 @@ const structure = [
 			{ label: 'Maps', link: '/app/ui/maps' },
 		],
 	},
-	{ id: 5, label: 'Banner', link: '/app/banners', icon: <TableIcon /> },
+	{ id: 5, label: 'Banner', link: '/app/banners?page=0&rowsPerPage=10&sort=desc', icon: <TableIcon /> },
 	{ id: 6, type: 'divider' },
 	{ id: 7, type: 'title', label: 'HELP' },
 	{ id: 8, label: 'FAQ',  icon: <FAQIcon /> },

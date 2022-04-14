@@ -19,7 +19,7 @@ import {
 
 // styles
 import useStyles from './styles';
-
+ 
 // components
 import Header from '../Header';
 import Sidebar from '../Sidebar';
@@ -61,11 +61,10 @@ function Layout(props) {
 						<Route path="/app/dashboard" component={Dashboard} />
 						<Route path="/app/typography" component={Typography} />
 						<Route path="/app/tables" component={Tables} />
-						<Route path="/app/banners" exact component={BannerList} />
+						<Route path="/app/banners" exact render={() => <Redirect to="?page=0&rowsPerPage=10&sort=desc"/> } component={BannerList} />
 						<Route path="/app/banners/create" exact component={BannerForm} />
 						<Route path="/app/banners/:id" exact component={BannerDetail} />
 						<Route path="/app/banners/:id/edit" exact component={BannerForm} />
-						
 						
 						<Route path="/app/notifications" component={Notifications} />
 						<Route
