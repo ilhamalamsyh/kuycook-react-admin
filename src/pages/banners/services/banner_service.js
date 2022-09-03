@@ -1,8 +1,9 @@
+/* eslint-disable no-undef */
 import axios from 'axios';
 import { checkExpiryToken } from '../../../utils/handleToken';
 
-const BANNER_LIST_ENDPOINT_URL = 'http://localhost:8080/kuycook/api/banners?&size=';
-const BANNER_ENDPOINT_URL = 'http://localhost:8080/kuycook/api/banners/';
+const BANNER_LIST_ENDPOINT_URL = `${process.env.REACT_APP_GRAPHQL_URL}/kuycook/api/banners?&size=`;
+const BANNER_ENDPOINT_URL = `${process.env.REACT_APP_GRAPHQL_URL}/kuycook/api/banners/`;
 
 const user = JSON.parse(localStorage.getItem('user'));
 const LOGIN_FAILURE = 'LOGIN_FAILURE';

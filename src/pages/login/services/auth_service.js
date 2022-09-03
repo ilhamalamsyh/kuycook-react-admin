@@ -1,7 +1,8 @@
+/* eslint-disable no-undef */
 import axios from 'axios';
 import { toast } from 'react-toastify';
 
-const API_URL = 'http://localhost:8080/kuycook/api/auth/signin';
+const API_URL = `${process.env.REACT_APP_GRAPHQL_URL}/kuycook/api/auth/signin`;
 
 const errorNotification = (errorMessage) => toast.error(errorMessage,{
 	position: 'top-right',
